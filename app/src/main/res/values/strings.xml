@@ -14,9 +14,11 @@
     <string name="check">확인</string>
     <string name="go_login1">회원이신가요?</string>
     <string name="go_login2">로그인</string>
-    
+
     <string name="profile">프로필</string>
     <string name="write">글쓰기</string>
     <string name="home">홈</string>
+
+    <string name="test">8월 20일 ~ 23일까지\n신아인 밥 먹여주기.\n\n5만 포인트 드림\n크크\n맛있겠당 ~\n\n6시까지 저희 집으로 오세요 ㅋ\n\n많은 참여 바랍니당</string>
 
 </resources>
