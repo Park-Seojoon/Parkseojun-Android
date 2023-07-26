@@ -1,0 +1,79 @@
+package com.seojunpark.android.data.repository
+
+import android.util.Log
+import com.seojunpark.android.data.dto.LoginDTO
+import com.seojunpark.android.data.dto.LoginRequest
+import com.seojunpark.android.data.dto.SignUpRequest
+import com.seojunpark.android.data.remote.LoginApi
+import com.seojunpark.android.data.remote.SignUpApi
+import com.seojunpark.android.domain.repository.MainRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
+
+class MainRepositoryImpl @Inject constructor(
+    private val signUpApi: SignUpApi,
+    private val loginApi: LoginApi
+) : MainRepository {
+
+    override suspend fun signUp(
+        email: String,
+        name: String,
+        password: String,
+        rePassword: String
+    ): Pair<Boolean, String> {
+        return try {
+            val response = signUpApi.signUp(SignUpRequest( email, name, password, rePassword))
+            when (response.code()) {
+                201 -> {
+                    Pair(true, "회원가입이 완료되었습니다.")
+                }
+
+                400 -> {
+                    Pair(false, "요청 형식이 올바르지 않습니다.")
+                }
+
+                409 -> {
+                    Pair(false, "중복된 이메일입니다.")
+                }
+
+                else -> {
+                    Log.d("response", response.code().toString())
+                    Pair(false, "잘못된 요청")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("fail", (e.printStackTrace()).toString())
+            return Pair(false, "실패")
+        }
+    }
+
+    override fun login(email: String, password: String): Flow<LoginDTO> {
+        return flow {
+            try {
+                val response = loginApi.login(LoginRequest(email, password))
+                when (response.code()) {
+                    200 -> {
+
+                    }
+
+                    400 -> {
+
+                    }
+
+                    404 -> {
+
+                    }
+
+                    else -> {
+
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+}

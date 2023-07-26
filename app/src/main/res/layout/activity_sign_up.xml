@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.seojunpark.android.presentation.viewmodel.SignUpViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,7 +38,11 @@
             android:layout_marginEnd="28dp"
             android:background="@drawable/edittext_background"
             android:hint="@string/input_name"
+            android:inputType="text"
+            android:maxLength="10"
+            android:maxLines="1"
             android:paddingStart="20dp"
+            android:text="@={viewModel.name}"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +57,10 @@
             android:layout_marginEnd="28dp"
             android:background="@drawable/edittext_background"
             android:hint="@string/input_email"
+            android:inputType="text"
+            android:maxLines="1"
             android:paddingStart="20dp"
+            android:text="@={viewModel.email}"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,7 +75,10 @@
             android:layout_marginEnd="28dp"
             android:background="@drawable/edittext_background"
             android:hint="@string/input_pw"
+            android:inputType="text"
+            android:maxLines="1"
             android:paddingStart="20dp"
+            android:text="@={viewModel.password}"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +93,10 @@
             android:layout_marginEnd="28dp"
             android:background="@drawable/edittext_background"
             android:hint="@string/input_repw"
+            android:inputType="text"
+            android:maxLines="1"
             android:paddingStart="20dp"
+            android:text="@={viewModel.rePassword}"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
