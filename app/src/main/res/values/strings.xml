@@ -20,7 +20,7 @@
     <string name="home">홈</string>
 
     <string name="test">8월 20일 ~ 23일까지\n신아인 밥 먹여주기.\n\n5만 포인트 드림\n크크\n맛있겠당 ~\n\n6시까지 저희 집으로 오세요 ㅋ\n\n많은 참여 바랍니당</string>
-    
+
     <string name="title">제목</string>
     <string name="input_title">제목을 입력하세요.</string>
     <string name="point">포인트</string>
@@ -28,5 +28,11 @@
     <string name="content">내용</string>
     <string name="content_hint">내용을 입력하세요.\n정확한 정보 전달을 위해\n자세히 적어주세요.</string>
     <string name="upload">등록하기</string>
+
+    <string name="point_e">Point</string>
+    <string name="charging">충전하기</string>
+    <string name="takeout">인출하기</string>
+    <string name="write_list">글 작성내역</string>
+    <string name="request">신청현황</string>
 
 </resources>

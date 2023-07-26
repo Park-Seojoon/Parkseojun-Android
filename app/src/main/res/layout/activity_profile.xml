@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.ProfileActivity">
+        
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="85dp"
+            android:layout_height="85dp"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/profile_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="30dp"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="신아인신아인신아인"
+            android:textSize="16sp"
+            android:layout_marginTop="90dp"
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="닉네임 수정"
+            android:textColor="@color/gray4"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/image"
+            app:layout_constraintTop_toBottomOf="@id/name" />
+        
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/box"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="25dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:paddingBottom="10dp"
+            android:background="@drawable/camera_background"
+            app:layout_constraintTop_toBottomOf="@id/image">
+
+            <TextView
+                android:id="@+id/text_point"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/point_e"
+                android:textColor="@color/main_color"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100,000"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_charging"
+                android:layout_width="123dp"
+                android:layout_height="27dp"
+                android:background="@drawable/btn_background"
+                android:text="@string/charging"
+                android:textSize="11sp"
+                android:textColor="@color/white"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_takeout"
+                android:layout_width="123dp"
+                android:layout_height="27dp"
+                android:background="@drawable/btn_background"
+                android:text="@string/takeout"
+                android:textSize="11sp"
+                android:textColor="@color/white"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="45dp"
+            android:background="@color/gray4"
+            app:layout_constraintTop_toBottomOf="@id/box" />
+
+        <TextView
+            android:id="@+id/go_write_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line"
+            android:layout_marginStart="30dp"
+            android:gravity="center"
+            android:drawableStart="@drawable/round_border_color_black"
+            android:drawablePadding="10dp"
+            android:layout_marginTop="30dp"
+            android:textSize="14sp"
+            android:text="@string/write_list"/>
+
+        <TextView
+            android:id="@+id/go_request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/go_write_list"
+            android:layout_marginStart="30dp"
+            android:gravity="center"
+            android:drawableStart="@drawable/outline_file_copy"
+            android:drawablePadding="10dp"
+            android:layout_marginTop="30dp"
+            android:textSize="14sp"
+            android:text="@string/request"/>
+
+
+        <LinearLayout
+            android:id="@+id/tab"
+            android:layout_width="match_parent"
+            android:layout_height="83dp"
+            android:elevation="10dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:id="@+id/go_home"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/baseline_home" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/home"
+                    android:textColor="@color/gray2"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/go_write"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/round_border_color" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/write"
+                    android:textColor="@color/gray2"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/go_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/baseline_account_circle_click" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/profile"
+                    android:textColor="@color/main_color"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
