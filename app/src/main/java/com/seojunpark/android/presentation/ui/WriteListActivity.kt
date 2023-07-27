@@ -13,6 +13,7 @@ import com.seojunpark.android.databinding.ActivityWriteBinding
 import com.seojunpark.android.databinding.ActivityWriteListBinding
 import com.seojunpark.android.presentation.adapter.MainRecyclerAdapter
 import com.seojunpark.android.presentation.adapter.WriteListRecyclerAdapter
+import com.seojunpark.android.presentation.viewmodel.DetailViewModel
 import com.seojunpark.android.presentation.viewmodel.WriteListViewModel
 import com.seojunpark.android.presentation.viewmodel.WriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,6 +25,7 @@ class WriteListActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityWriteListBinding
     private val viewModel: WriteListViewModel by viewModels()
+    private val detailViewModel: DetailViewModel by viewModels()
     private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,8 +55,9 @@ class WriteListActivity : AppCompatActivity() {
                             Glide.with(this@WriteListActivity),
                             viewModel,
                             accessToken!!,
-                            this@WriteListActivity
-                        )
+                            this@WriteListActivity,
+                            detailViewModel
+                            )
                         adapter.submitList(list?.boardList)
                         recycler.adapter = adapter
                     }

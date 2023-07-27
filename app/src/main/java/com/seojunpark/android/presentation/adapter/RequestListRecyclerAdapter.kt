@@ -20,6 +20,8 @@ import com.seojunpark.android.presentation.ui.MainActivity
 import com.seojunpark.android.presentation.ui.RequestActivity
 import com.seojunpark.android.presentation.viewmodel.RequestViewModel
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 class RequestListRecyclerAdapter(
     private val glide: RequestManager,
@@ -67,7 +69,7 @@ class RequestListRecyclerAdapter(
                                     intent.putExtra("title", detailList!!.title)
                                     intent.putExtra("point", detailList!!.point)
                                     intent.putExtra("content", detailList!!.content)
-                                    intent.putExtra("completed", detailList!!.completed)
+                                    intent.putExtra("myListIngType", detailList!!.myListIngType)
                                     intent.putExtra("ingType", list.ingType)
                                     activity.startActivity(intent)
                                     activity.overridePendingTransition(0, 0)
@@ -84,7 +86,7 @@ class RequestListRecyclerAdapter(
         fun bind(list: RequestDTO) {
             glide.load(list.url).centerCrop().into(image)
             title.text = list.title
-            point.text = list.point.toString()
+            point.text = NumberFormat.getInstance(Locale.KOREA).format(list.point) + " point"
             if (list.ingType == "COMPLETED") {
                 btn.setBackgroundResource(R.drawable.btn2_background)
                 btn.text = "완료"

@@ -252,4 +252,31 @@ class MainRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun check(accessToken: String, id: Long): Pair<Boolean, String> {
+        return try {
+            val response = detailApi.check(accessToken, id)
+            when (response.code()) {
+                200 -> {
+                    Pair(true, "성공적으로 신청되었습니다.")
+                }
+
+                401 -> {
+                    Pair(false, "유효한 토큰이 아닙니다.")
+                }
+
+                403 -> {
+                    Pair(false, "게시글 작성자가 요청하지 않았습니다.")
+                }
+
+                else -> {
+                    Log.d("response", response.code().toString())
+                    Pair(false, "잘못된 요청")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Pair(false, "실패")
+        }
+    }
 }

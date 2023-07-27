@@ -5,8 +5,10 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isGone
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.seojunpark.android.R
@@ -16,6 +18,8 @@ import com.seojunpark.android.presentation.viewmodel.LoginViewModel
 import com.seojunpark.android.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 
 @AndroidEntryPoint
@@ -42,7 +46,7 @@ class DetailActivity : AppCompatActivity() {
         val title = intent.getStringExtra("title")
         val point = intent.getIntExtra("point", 0)
         val content = intent.getStringExtra("content")
-        val completed = intent.getBooleanExtra("completed", true)
+        val myListIngType = intent.getStringExtra("myListIngType")
 
         with(binding) {
             Glide.with(this@DetailActivity).load(url).centerCrop()
@@ -50,25 +54,25 @@ class DetailActivity : AppCompatActivity() {
 
             this.title.text = title
 
-            this.point.text = point.toString()
+            this.point.text = NumberFormat.getInstance(Locale.KOREA).format(point) + " point"
 
             this.content.text = content
 
             when(activity) {
                 "Main" -> {
-                    if (completed) {
-                        btn.setBackgroundResource(R.drawable.btn2_background)
-                        btn.text = "마감"
-                    } else {
+                    if (myListIngType == "NO") {
                         btn.setBackgroundResource(R.drawable.btn_background)
                         btn.text = "신청하기"
+                    } else {
+                        btn.setBackgroundResource(R.drawable.btn2_background)
+                        btn.text = "마감"
                     }
                     goBack.setOnClickListener {
                         startActivity(Intent(this@DetailActivity, MainActivity::class.java))
                         finish()
                     }
                     btn.setOnClickListener {
-                        if (!completed) {
+                        if (myListIngType == "NO") {
                             if (!accessToken.isNullOrBlank()) {
                                 viewModel.request(accessToken, id)
 
@@ -79,19 +83,28 @@ class DetailActivity : AppCompatActivity() {
                     }
                 }
                 "WriteList" -> {
-                    if (completed) {
-                        btn.setBackgroundResource(R.drawable.btn2_background)
-                        btn.text = "완료"
-                    } else {
-                        btn.setBackgroundResource(R.drawable.btn_background)
-                        btn.text = "수락"
+                    val myListIngType2 = intent.getStringExtra("myListIngType2")
+                    when (myListIngType2) {
+                        "NO" -> {
+                            btn.visibility = View.GONE
+                        }
+                        "PROCEED" -> {
+                            btn.setBackgroundResource(R.drawable.btn_background)
+                            btn.text = "수락"
+                        }
+                        "COMPLETED" -> {
+                            btn.setBackgroundResource(R.drawable.btn2_background)
+                            btn.text = "완료"
+                        }
                     }
                     goBack.setOnClickListener {
                         finish()
                     }
                     btn.setOnClickListener {
-                        if (!completed) {
+                        if (myListIngType2 == "PROCEED") {
                             if (!accessToken.isNullOrBlank()) {
+                                viewModel.check(accessToken, id)
+
                                 btn.setBackgroundResource(R.drawable.btn2_background)
                                 btn.text = "완료"
                             }
@@ -110,14 +123,6 @@ class DetailActivity : AppCompatActivity() {
                     goBack.setOnClickListener {
                         finish()
                     }
-                    btn.setOnClickListener {
-                        if (!completed) {
-                            if (!accessToken.isNullOrBlank()) {
-                                btn.setBackgroundResource(R.drawable.btn2_background)
-                                btn.text = "완료"
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -126,7 +131,7 @@ class DetailActivity : AppCompatActivity() {
             viewModel.doneEvent.observe(this@DetailActivity) {
                 Toast.makeText(this@DetailActivity, it.second, Toast.LENGTH_SHORT).show()
                 if (it.first) {
-                    Log.d("success", "신청성공")
+                    Log.d("success", "성공")
                 }
             }
         }

@@ -55,4 +55,9 @@ interface MainRepository {
     fun requestList(
         accessToken: String
     ): Flow<RequestResponse>
+
+    suspend fun check(
+        accessToken: String,
+        id: Long
+    ): Pair<Boolean, String>
 }

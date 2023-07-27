@@ -20,4 +20,10 @@ interface DetailApi {
         @Header("Authorization") accessToken: String,
         @Path("id") id: Long
     ): Response<Unit>
+
+    @POST("user/article/{id}/check")
+    suspend fun check(
+        @Header("Authorization") accessToken: String,
+        @Path("id") id: Long
+    ): Response<Unit>
 }

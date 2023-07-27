@@ -6,7 +6,7 @@ data class DetailResponse(
     val content: String,
     val name: String,
     val point: Int,
-    val completed: Boolean,
+    val myListIngType: String,
     val url: String
 )
 

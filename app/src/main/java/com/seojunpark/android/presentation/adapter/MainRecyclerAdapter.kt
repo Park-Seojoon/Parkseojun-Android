@@ -17,6 +17,8 @@ import com.seojunpark.android.presentation.ui.DetailActivity
 import com.seojunpark.android.presentation.ui.MainActivity
 import com.seojunpark.android.presentation.viewmodel.MainViewModel
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 class MainRecyclerAdapter(
     private val glide: RequestManager,
@@ -62,7 +64,7 @@ class MainRecyclerAdapter(
                                     intent.putExtra("title", detailList!!.title)
                                     intent.putExtra("point", detailList!!.point)
                                     intent.putExtra("content", detailList!!.content)
-                                    intent.putExtra("completed", detailList!!.completed)
+                                    intent.putExtra("myListIngType", detailList!!.myListIngType)
                                     activity.startActivity(intent)
                                     activity.overridePendingTransition(0, 0)
                                 }
@@ -78,7 +80,7 @@ class MainRecyclerAdapter(
         fun bind(list: MainDTO) {
             glide.load(list.url).centerCrop().into(image)
             title.text = list.title
-            point.text = list.point.toString()
+            point.text = NumberFormat.getInstance(Locale.KOREA).format(list.point) + " point"
         }
     }
 

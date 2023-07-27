@@ -3,10 +3,12 @@ package com.seojunpark.android.presentation.adapter
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isGone
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,14 +21,18 @@ import com.seojunpark.android.databinding.RecyclerItemBinding
 import com.seojunpark.android.presentation.ui.DetailActivity
 import com.seojunpark.android.presentation.ui.MainActivity
 import com.seojunpark.android.presentation.ui.WriteListActivity
+import com.seojunpark.android.presentation.viewmodel.DetailViewModel
 import com.seojunpark.android.presentation.viewmodel.WriteListViewModel
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 class WriteListRecyclerAdapter(
     private val glide: RequestManager,
     private val viewModel: WriteListViewModel,
     private val accessToken: String,
-    private val activity: WriteListActivity
+    private val activity: WriteListActivity,
+    private val detailViewModel: DetailViewModel
 ) : ListAdapter<WriteListDTO, WriteListRecyclerAdapter.ViewHolder>(DiffCallback<WriteListDTO>()) {
 
     var detailList: DetailResponse? = null
@@ -43,6 +49,19 @@ class WriteListRecyclerAdapter(
             title = binding.title
             point = binding.point
             btn = binding.btnCharging
+
+            btn.setOnClickListener {
+                val position = adapterPosition
+
+                val list = getItem(position)
+
+                if (list.myListIngType == "PROCEED") {
+                    detailViewModel.check(accessToken, list.id)
+
+                    btn.setBackgroundResource(R.drawable.btn2_background)
+                    btn.text = "완료"
+                }
+            }
 
             binding.root.setOnClickListener {
 
@@ -68,7 +87,8 @@ class WriteListRecyclerAdapter(
                                     intent.putExtra("title", detailList!!.title)
                                     intent.putExtra("point", detailList!!.point)
                                     intent.putExtra("content", detailList!!.content)
-                                    intent.putExtra("completed", detailList!!.completed)
+                                    intent.putExtra("myListIngType", detailList!!.myListIngType)
+                                    intent.putExtra("myListIngType2", list.myListIngType)
                                     activity.startActivity(intent)
                                     activity.overridePendingTransition(0, 0)
                                 }
@@ -84,13 +104,20 @@ class WriteListRecyclerAdapter(
         fun bind(list: WriteListDTO) {
             glide.load(list.url).centerCrop().into(image)
             title.text = list.title
-            point.text = list.point.toString()
-            if (list.completed) {
-                btn.setBackgroundResource(R.drawable.btn2_background)
-                btn.text = "완료"
-            } else {
-                btn.setBackgroundResource(R.drawable.btn_background)
-                btn.text = "수락"
+            point.text = NumberFormat.getInstance(Locale.KOREA).format(list.point) + " point"
+            Log.d("myListIngType", list.myListIngType)
+            when (list.myListIngType) {
+                "NO" -> {
+                    btn.visibility = View.GONE
+                }
+                "PROCEED" -> {
+                    btn.setBackgroundResource(R.drawable.btn_background)
+                    btn.text = "수락"
+                }
+                "COMPLETED" -> {
+                    btn.setBackgroundResource(R.drawable.btn2_background)
+                    btn.text = "완료"
+                }
             }
         }
     }

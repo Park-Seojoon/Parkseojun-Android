@@ -33,4 +33,17 @@ class DetailViewModel @Inject constructor(
 
         }
     }
+
+    fun check(accessToken: String, id: Long) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mainUseCase.check(accessToken, id).also {
+                _doneEvent.postValue(
+                    Pair(
+                        it.first,
+                        it.second
+                    )
+                )
+            }
+        }
+    }
 }

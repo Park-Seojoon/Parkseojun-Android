@@ -41,4 +41,6 @@ class MainUseCase @Inject constructor(
     fun writeList(accessToken: String) = mainRepository.writeList(accessToken)
 
     fun requestList(accessToken: String) = mainRepository.requestList(accessToken)
+
+    suspend fun check(accessToken: String, id: Long) = mainRepository.check(accessToken, id)
 }

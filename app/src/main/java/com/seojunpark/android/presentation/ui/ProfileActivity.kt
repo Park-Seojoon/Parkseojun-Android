@@ -16,6 +16,8 @@ import com.seojunpark.android.presentation.viewmodel.ProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
 
 @AndroidEntryPoint
 class ProfileActivity : AppCompatActivity() {
@@ -45,7 +47,7 @@ class ProfileActivity : AppCompatActivity() {
                     if (it != null) {
                         binding.apply {
                             name.text = it.name
-                            point.text = it.point.toString()
+                            point.text = NumberFormat.getInstance(Locale.KOREA).format(it.point)
                         }
                     }
                 }
