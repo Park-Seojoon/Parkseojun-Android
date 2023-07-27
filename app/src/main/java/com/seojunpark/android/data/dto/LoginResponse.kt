@@ -1,6 +1,6 @@
 package com.seojunpark.android.data.dto
 
-data class LoginDTO(
+data class LoginResponse(
     val accessToken: String,
     val refreshToken: String,
     val accessExpiredAt: String,

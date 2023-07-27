@@ -1,6 +1,7 @@
 package com.seojunpark.android.domain.repository
 
-import com.seojunpark.android.data.dto.LoginDTO
+import com.seojunpark.android.data.dto.LoginResponse
+import com.seojunpark.android.data.dto.MainResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MainRepository {
@@ -15,5 +16,9 @@ interface MainRepository {
     fun login(
         email: String,
         password: String
-    ): Flow<LoginDTO>
+    ): Flow<LoginResponse>
+
+    fun loadList(
+        accessToken: String
+    ): Flow<MainResponse>
 }

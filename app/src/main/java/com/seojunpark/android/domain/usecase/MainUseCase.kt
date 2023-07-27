@@ -25,4 +25,6 @@ class MainUseCase @Inject constructor(
         email,
         password
     )
+
+    fun loadList(accessToken: String) = mainRepository.loadList(accessToken)
 }

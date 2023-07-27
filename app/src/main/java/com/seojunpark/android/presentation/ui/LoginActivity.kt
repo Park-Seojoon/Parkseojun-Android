@@ -1,16 +1,18 @@
 package com.seojunpark.android.presentation.ui
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import com.seojunpark.android.R
 import com.seojunpark.android.databinding.ActivityLoginBinding
 import com.seojunpark.android.presentation.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -18,6 +20,7 @@ class LoginActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityLoginBinding
     private val viewModel: LoginViewModel by viewModels()
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -26,6 +29,7 @@ class LoginActivity : AppCompatActivity() {
             setContentView(root)
             lifecycleOwner = this@LoginActivity
             viewModel = this@LoginActivity.viewModel
+            sharedPreferences = getSharedPreferences("MyPreferences", MODE_PRIVATE)
         }
 
         with(binding) {
@@ -40,11 +44,27 @@ class LoginActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            viewModel.doneEvent.observe(this@LoginActivity) {
-                Toast.makeText(this@LoginActivity, it.second, Toast.LENGTH_SHORT).show()
-                if (it.first) {
-                    startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+            viewModel.loginInfo
+                .flowWithLifecycle(lifecycle, Lifecycle.State.RESUMED)
+                .collectLatest {
+                    val accessToken = viewModel.loginInfo.value?.accessToken
+                    if (accessToken != null) {
+                        val editor = sharedPreferences.edit()
+                        editor.putString("accessToken", accessToken)
+                        editor.apply()
+                    }
                 }
+        }
+
+        observeEvent()
+    }
+
+    private fun observeEvent() {
+        viewModel.doneEvent.observe(this) {
+            Toast.makeText(this, it.second, Toast.LENGTH_SHORT).show()
+            if (it.first) {
+                startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                finish()
             }
         }
     }

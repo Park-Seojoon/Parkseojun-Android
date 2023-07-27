@@ -1,10 +1,12 @@
 package com.seojunpark.android.data.repository
 
 import android.util.Log
-import com.seojunpark.android.data.dto.LoginDTO
+import com.seojunpark.android.data.dto.LoginResponse
 import com.seojunpark.android.data.dto.LoginRequest
+import com.seojunpark.android.data.dto.MainResponse
 import com.seojunpark.android.data.dto.SignUpRequest
 import com.seojunpark.android.data.remote.LoginApi
+import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.SignUpApi
 import com.seojunpark.android.domain.repository.MainRepository
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +15,8 @@ import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
     private val signUpApi: SignUpApi,
-    private val loginApi: LoginApi
+    private val loginApi: LoginApi,
+    private val mainApi: MainApi
 ) : MainRepository {
 
     override suspend fun signUp(
@@ -44,18 +47,20 @@ class MainRepositoryImpl @Inject constructor(
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.d("fail", (e.printStackTrace()).toString())
             return Pair(false, "실패")
         }
     }
 
-    override fun login(email: String, password: String): Flow<LoginDTO> {
+    override fun login(email: String, password: String): Flow<LoginResponse> {
         return flow {
             try {
                 val response = loginApi.login(LoginRequest(email, password))
                 when (response.code()) {
                     200 -> {
-
+                        val result = response.body()
+                        if (result != null) {
+                            emit(result)
+                        }
                     }
 
                     400 -> {
@@ -76,4 +81,19 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun loadList(accessToken: String): Flow<MainResponse> {
+        return flow {
+            try {
+                val response = mainApi.loadList(accessToken)
+                if (response.isSuccessful) {
+                    val list = response.body()
+                    if (list != null) {
+                        emit(list)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }
