@@ -1,9 +1,13 @@
 package com.seojunpark.android.presentation.ui
 
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.seojunpark.android.R
 import com.seojunpark.android.databinding.ActivityDetailBinding
@@ -11,6 +15,7 @@ import com.seojunpark.android.presentation.viewmodel.DetailViewModel
 import com.seojunpark.android.presentation.viewmodel.LoginViewModel
 import com.seojunpark.android.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -43,10 +48,6 @@ class DetailActivity : AppCompatActivity() {
             Glide.with(this@DetailActivity).load(url).centerCrop()
                 .into(image)
 
-            goBack.setOnClickListener {
-                finish()
-            }
-
             this.title.text = title
 
             this.point.text = point.toString()
@@ -62,6 +63,20 @@ class DetailActivity : AppCompatActivity() {
                         btn.setBackgroundResource(R.drawable.btn_background)
                         btn.text = "신청하기"
                     }
+                    goBack.setOnClickListener {
+                        startActivity(Intent(this@DetailActivity, MainActivity::class.java))
+                        finish()
+                    }
+                    btn.setOnClickListener {
+                        if (!completed) {
+                            if (!accessToken.isNullOrBlank()) {
+                                viewModel.request(accessToken, id)
+
+                                btn.setBackgroundResource(R.drawable.btn2_background)
+                                btn.text = "마감"
+                            }
+                        }
+                    }
                 }
                 "WriteList" -> {
                     if (completed) {
@@ -71,33 +86,48 @@ class DetailActivity : AppCompatActivity() {
                         btn.setBackgroundResource(R.drawable.btn_background)
                         btn.text = "수락"
                     }
+                    goBack.setOnClickListener {
+                        finish()
+                    }
+                    btn.setOnClickListener {
+                        if (!completed) {
+                            if (!accessToken.isNullOrBlank()) {
+                                btn.setBackgroundResource(R.drawable.btn2_background)
+                                btn.text = "완료"
+                            }
+                        }
+                    }
+                }
+                "RequestList" -> {
+                    val ingType = intent.getStringExtra("ingType")
+                    if (ingType == "COMPLETED") {
+                        btn.setBackgroundResource(R.drawable.btn2_background)
+                        btn.text = "완료"
+                    } else {
+                        btn.setBackgroundResource(R.drawable.btn_background)
+                        btn.text = "진행"
+                    }
+                    goBack.setOnClickListener {
+                        finish()
+                    }
+                    btn.setOnClickListener {
+                        if (!completed) {
+                            if (!accessToken.isNullOrBlank()) {
+                                btn.setBackgroundResource(R.drawable.btn2_background)
+                                btn.text = "완료"
+                            }
+                        }
+                    }
                 }
             }
+        }
 
-            btn.setOnClickListener {
-                when(activity) {
-                    "Main" -> {
-                        if (!completed) {
-                            if (!accessToken.isNullOrBlank()) {
-                                viewModel.request(accessToken, id)
-
-                                btn.setBackgroundResource(R.drawable.btn2_background)
-                                btn.text = "마감"
-                            }
-                        }
-                    }
-                    "WriteList" -> {
-                        if (!completed) {
-                            if (!accessToken.isNullOrBlank()) {
-                                viewModel.request(accessToken, id)
-
-                                btn.setBackgroundResource(R.drawable.btn2_background)
-                                btn.text = "마감"
-                            }
-                        }
-                    }
+        lifecycleScope.launch {
+            viewModel.doneEvent.observe(this@DetailActivity) {
+                Toast.makeText(this@DetailActivity, it.second, Toast.LENGTH_SHORT).show()
+                if (it.first) {
+                    Log.d("success", "신청성공")
                 }
-
             }
         }
     }

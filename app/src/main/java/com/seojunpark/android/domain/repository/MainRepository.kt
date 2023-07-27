@@ -4,6 +4,7 @@ import com.seojunpark.android.data.dto.response.DetailResponse
 import com.seojunpark.android.data.dto.response.LoginResponse
 import com.seojunpark.android.data.dto.response.MainResponse
 import com.seojunpark.android.data.dto.response.ProfileResponse
+import com.seojunpark.android.data.dto.response.RequestResponse
 import com.seojunpark.android.data.dto.response.WriteListResponse
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
@@ -32,16 +33,16 @@ interface MainRepository {
         id: Long
     ): Flow<DetailResponse>
 
-    fun request(
+    suspend fun request(
         accessToken: String,
         id: Long
-    ): Flow<Unit>
+    ): Pair<Boolean, String>
 
-    fun write(
+    suspend fun write(
         accessToken: String,
         data: RequestBody,
         files: List<MultipartBody.Part>
-    ): Flow<Unit>
+    ): Pair<Boolean, String>
 
     fun userInfo(
         accessToken: String
@@ -50,4 +51,8 @@ interface MainRepository {
     fun writeList(
         accessToken: String
     ): Flow<WriteListResponse>
+
+    fun requestList(
+        accessToken: String
+    ): Flow<RequestResponse>
 }

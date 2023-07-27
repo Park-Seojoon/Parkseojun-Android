@@ -4,6 +4,7 @@ import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.ProfileApi
+import com.seojunpark.android.data.remote.RequestApi
 import com.seojunpark.android.data.remote.SignUpApi
 import com.seojunpark.android.data.remote.WriteApi
 import com.seojunpark.android.data.remote.WriteListApi
@@ -45,4 +46,8 @@ object ServiceModule {
     @Singleton
     @Provides
     fun providesWriteListService(retrofit: Retrofit): WriteListApi = retrofit.create(WriteListApi::class.java)
+
+    @Singleton
+    @Provides
+    fun providesRequestService(retrofit: Retrofit): RequestApi = retrofit.create(RequestApi::class.java)
 }

@@ -7,11 +7,13 @@ import com.seojunpark.android.data.dto.request.LoginRequest
 import com.seojunpark.android.data.dto.response.MainResponse
 import com.seojunpark.android.data.dto.request.SignUpRequest
 import com.seojunpark.android.data.dto.response.ProfileResponse
+import com.seojunpark.android.data.dto.response.RequestResponse
 import com.seojunpark.android.data.dto.response.WriteListResponse
 import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.ProfileApi
+import com.seojunpark.android.data.remote.RequestApi
 import com.seojunpark.android.data.remote.SignUpApi
 import com.seojunpark.android.data.remote.WriteApi
 import com.seojunpark.android.data.remote.WriteListApi
@@ -29,7 +31,8 @@ class MainRepositoryImpl @Inject constructor(
     private val detailApi: DetailApi,
     private val writeApi: WriteApi,
     private val profileApi: ProfileApi,
-    private val writeListApi: WriteListApi
+    private val writeListApi: WriteListApi,
+    private val requestApi: RequestApi
 ) : MainRepository {
 
     override suspend fun signUp(
@@ -39,7 +42,7 @@ class MainRepositoryImpl @Inject constructor(
         rePassword: String
     ): Pair<Boolean, String> {
         return try {
-            val response = signUpApi.signUp(SignUpRequest( email, name, password, rePassword))
+            val response = signUpApi.signUp(SignUpRequest(email, name, password, rePassword))
             when (response.code()) {
                 201 -> {
                     Pair(true, "회원가입이 완료되었습니다.")
@@ -126,31 +129,81 @@ class MainRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun request(accessToken: String, id: Long): Flow<Unit> {
-        return flow {
-            try {
-                val response = detailApi.request(accessToken, id)
-                if (response.isSuccessful) {
-                    val result = response.code()
+    override suspend fun request(accessToken: String, id: Long): Pair<Boolean, String> {
+        return try {
+            val response = detailApi.request(accessToken, id)
+            when (response.code()) {
+                200 -> {
+                    Pair(true, "성공적으로 신청되었습니다.")
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
+
+                401 -> {
+                    Pair(false, "유효한 토큰이 아닙니다.")
+                }
+
+                403 -> {
+                    Pair(false, "본인 게시글입니다.")
+                }
+
+                404 -> {
+                    Pair(false, "게시글이 없습니다..")
+                }
+
+                409 -> {
+                    Pair(false, "이미 신청한 유저가 있습니다.")
+                }
+
+                else -> {
+                    Log.d("response", response.code().toString())
+                    Pair(false, "잘못된 요청")
+                }
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return Pair(false, "실패")
+        }
+
+    }
+
+    override suspend fun write(
+        accessToken: String,
+        data: RequestBody,
+        files: List<MultipartBody.Part>
+    ): Pair<Boolean, String> {
+        return try {
+            val response = writeApi.write(accessToken, data, files)
+            when (response.code()) {
+                200 -> {
+                    Pair(true, "성공적으로 신청되었습니다.")
+                }
+
+                401 -> {
+                    Pair(false, "유효한 토큰이 아닙니다.")
+                }
+
+                403 -> {
+                    Pair(false, "본인 게시글입니다.")
+                }
+
+                404 -> {
+                    Pair(false, "게시글이 없습니다..")
+                }
+
+                409 -> {
+                    Pair(false, "이미 신청한 유저가 있습니다.")
+                }
+
+                else -> {
+                    Log.d("response", response.code().toString())
+                    Pair(false, "잘못된 요청")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Pair(false, "실패")
         }
     }
 
-    override fun write(accessToken: String, data: RequestBody, files: List<MultipartBody.Part>): Flow<Unit> {
-        return flow {
-            try {
-                val response = writeApi.write(accessToken, data, files)
-                if (response.isSuccessful) {
-                    val result = response.code()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
 
     override fun userInfo(accessToken: String): Flow<ProfileResponse> {
         return flow {
@@ -172,6 +225,22 @@ class MainRepositoryImpl @Inject constructor(
         return flow {
             try {
                 val response = writeListApi.writeList(accessToken)
+                if (response.isSuccessful) {
+                    val list = response.body()
+                    if (list != null) {
+                        emit(list)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun requestList(accessToken: String): Flow<RequestResponse> {
+        return flow {
+            try {
+                val response = requestApi.requestList(accessToken)
                 if (response.isSuccessful) {
                     val list = response.body()
                     if (list != null) {

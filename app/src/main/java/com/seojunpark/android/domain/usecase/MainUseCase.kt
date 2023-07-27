@@ -32,11 +32,13 @@ class MainUseCase @Inject constructor(
 
     fun loadDetailList(accessToken: String, id: Long) = mainRepository.loadDetailList(accessToken, id)
 
-    fun request(accessToken: String, id: Long) = mainRepository.request(accessToken, id)
+    suspend fun request(accessToken: String, id: Long) = mainRepository.request(accessToken, id)
 
-    fun write(accessToken: String, data: RequestBody, files: List<MultipartBody.Part>) = mainRepository.write(accessToken, data, files)
+    suspend fun write(accessToken: String, data: RequestBody, files: List<MultipartBody.Part>) = mainRepository.write(accessToken, data, files)
 
     fun userInfo(accessToken: String) = mainRepository.userInfo(accessToken)
 
     fun writeList(accessToken: String) = mainRepository.writeList(accessToken)
+
+    fun requestList(accessToken: String) = mainRepository.requestList(accessToken)
 }
