@@ -2,6 +2,7 @@ package com.seojunpark.android.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.seojunpark.android.data.dto.DetailResponse
 import com.seojunpark.android.data.dto.MainResponse
 import com.seojunpark.android.domain.usecase.MainUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,16 @@ class MainViewModel @Inject constructor(
     fun loadList(accessToken: String) {
         viewModelScope.launch {
             _listResponse.value = mainUseCase.loadList(accessToken).firstOrNull()
+        }
+    }
+
+    private val _detailList = MutableStateFlow<DetailResponse?>(null)
+    val detailList: StateFlow<DetailResponse?> = _detailList
+
+    fun loadDetailList(accessToken: String, id: Long) {
+        viewModelScope.launch {
+            val response = mainUseCase.loadDetailList(accessToken, id).firstOrNull()
+            _detailList.value = response
         }
     }
 }

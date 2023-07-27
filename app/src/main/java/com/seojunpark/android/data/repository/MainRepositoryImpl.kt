@@ -1,10 +1,12 @@
 package com.seojunpark.android.data.repository
 
 import android.util.Log
+import com.seojunpark.android.data.dto.DetailResponse
 import com.seojunpark.android.data.dto.LoginResponse
 import com.seojunpark.android.data.dto.LoginRequest
 import com.seojunpark.android.data.dto.MainResponse
 import com.seojunpark.android.data.dto.SignUpRequest
+import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.SignUpApi
@@ -16,7 +18,8 @@ import javax.inject.Inject
 class MainRepositoryImpl @Inject constructor(
     private val signUpApi: SignUpApi,
     private val loginApi: LoginApi,
-    private val mainApi: MainApi
+    private val mainApi: MainApi,
+    private val detailApi: DetailApi
 ) : MainRepository {
 
     override suspend fun signUp(
@@ -85,6 +88,22 @@ class MainRepositoryImpl @Inject constructor(
         return flow {
             try {
                 val response = mainApi.loadList(accessToken)
+                if (response.isSuccessful) {
+                    val list = response.body()
+                    if (list != null) {
+                        emit(list)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun loadDetailList(accessToken: String, id: Long): Flow<DetailResponse> {
+        return flow {
+            try {
+                val response = detailApi.loadDetailList(accessToken, id)
                 if (response.isSuccessful) {
                     val list = response.body()
                     if (list != null) {

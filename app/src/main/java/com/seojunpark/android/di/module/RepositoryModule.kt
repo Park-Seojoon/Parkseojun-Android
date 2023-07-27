@@ -1,5 +1,6 @@
 package com.seojunpark.android.di.module
 
+import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.SignUpApi
@@ -20,6 +21,7 @@ object RepositoryModule {
     fun providesContentRepository(
         signUpApi: SignUpApi,
         loginApi: LoginApi,
-        mainApi: MainApi
-    ): MainRepository = MainRepositoryImpl(signUpApi, loginApi, mainApi)
+        mainApi: MainApi,
+        detailApi: DetailApi
+    ): MainRepository = MainRepositoryImpl(signUpApi, loginApi, mainApi, detailApi)
 }

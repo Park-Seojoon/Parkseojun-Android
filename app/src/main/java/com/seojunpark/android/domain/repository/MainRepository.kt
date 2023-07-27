@@ -1,5 +1,6 @@
 package com.seojunpark.android.domain.repository
 
+import com.seojunpark.android.data.dto.DetailResponse
 import com.seojunpark.android.data.dto.LoginResponse
 import com.seojunpark.android.data.dto.MainResponse
 import kotlinx.coroutines.flow.Flow
@@ -21,4 +22,9 @@ interface MainRepository {
     fun loadList(
         accessToken: String
     ): Flow<MainResponse>
+
+    fun loadDetailList(
+        accessToken: String,
+        id: Long
+    ): Flow<DetailResponse>
 }

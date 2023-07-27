@@ -59,7 +59,10 @@ class MainActivity : AppCompatActivity() {
                 .collectLatest { list ->
                     binding.apply {
                         val adapter = MainRecyclerAdapter(
-                            Glide.with(this@MainActivity)
+                            Glide.with(this@MainActivity),
+                            viewModel,
+                            accessToken!!,
+                            this@MainActivity
                         )
                         adapter.submitList(list?.boardList)
                         recycler.adapter = adapter

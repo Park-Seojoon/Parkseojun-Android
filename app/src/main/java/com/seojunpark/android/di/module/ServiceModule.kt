@@ -1,5 +1,6 @@
 package com.seojunpark.android.di.module
 
+import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.SignUpApi
@@ -25,4 +26,8 @@ object ServiceModule {
     @Singleton
     @Provides
     fun providesMainService(retrofit: Retrofit): MainApi = retrofit.create(MainApi::class.java)
+
+    @Singleton
+    @Provides
+    fun providesDetailService(retrofit: Retrofit): DetailApi = retrofit.create(DetailApi::class.java)
 }

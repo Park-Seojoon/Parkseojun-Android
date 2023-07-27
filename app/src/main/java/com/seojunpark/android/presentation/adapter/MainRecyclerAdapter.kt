@@ -1,19 +1,31 @@
 package com.seojunpark.android.presentation.adapter
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.seojunpark.android.data.dto.DetailResponse
 import com.seojunpark.android.data.dto.MainDTO
-import com.seojunpark.android.data.dto.MainResponse
 import com.seojunpark.android.databinding.RecyclerItemBinding
+import com.seojunpark.android.presentation.ui.DetailActivity
+import com.seojunpark.android.presentation.ui.MainActivity
+import com.seojunpark.android.presentation.viewmodel.MainViewModel
+import kotlinx.coroutines.launch
 
 class MainRecyclerAdapter(
-    private val glide: RequestManager
+    private val glide: RequestManager,
+    private val viewModel: MainViewModel,
+    private val accessToken: String,
+    private val activity: MainActivity
 ) : ListAdapter<MainDTO, MainRecyclerAdapter.ViewHolder>(DiffCallback<MainDTO>()) {
+
+    var detailList: DetailResponse? = null
 
     inner class ViewHolder(val binding: RecyclerItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val image: ImageView
@@ -24,6 +36,40 @@ class MainRecyclerAdapter(
             image = binding.image
             title = binding.title
             point = binding.point
+
+            binding.root.setOnClickListener {
+
+                val position = adapterPosition
+
+                val list = getItem(position)
+
+                viewModel.loadDetailList(accessToken, list.id)
+
+                activity.lifecycleScope.launch {
+                    viewModel.detailList.collect {
+                        if (it != null) {
+                            detailList = it
+
+                            Log.d("detailList", detailList.toString())
+
+                            if (detailList != null) {
+                                if (list.id == detailList!!.id) {
+                                    val intent = Intent(activity, DetailActivity::class.java)
+                                    intent.putExtra("url", detailList!!.url)
+                                    intent.putExtra("title", detailList!!.title)
+                                    intent.putExtra("point", detailList!!.point)
+                                    intent.putExtra("content", detailList!!.content)
+                                    intent.putExtra("completed", detailList!!.completed)
+                                    activity.startActivity(intent)
+                                    activity.overridePendingTransition(0, 0)
+                                }
+                            } else {
+                                activity.startActivity(Intent(activity, MainActivity::class.java))
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         fun bind(list: MainDTO) {

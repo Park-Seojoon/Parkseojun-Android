@@ -27,4 +27,6 @@ class MainUseCase @Inject constructor(
     )
 
     fun loadList(accessToken: String) = mainRepository.loadList(accessToken)
+
+    fun loadDetailList(accessToken: String, id: Long) = mainRepository.loadDetailList(accessToken, id)
 }
