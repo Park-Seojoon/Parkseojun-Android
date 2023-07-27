@@ -1,4 +1,4 @@
-package com.seojunpark.android.data.dto
+package com.seojunpark.android.data.dto.request
 
 data class LoginRequest(
     val email: String,

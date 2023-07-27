@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.seojunpark.android.R
-import com.seojunpark.android.data.dto.SignUpRequest
+import com.seojunpark.android.data.dto.request.SignUpRequest
 import com.seojunpark.android.databinding.ActivitySignUpBinding
 import com.seojunpark.android.presentation.viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint

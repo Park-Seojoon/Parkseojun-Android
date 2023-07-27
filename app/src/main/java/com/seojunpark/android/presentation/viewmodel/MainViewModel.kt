@@ -2,8 +2,8 @@ package com.seojunpark.android.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.seojunpark.android.data.dto.DetailResponse
-import com.seojunpark.android.data.dto.MainResponse
+import com.seojunpark.android.data.dto.response.DetailResponse
+import com.seojunpark.android.data.dto.response.MainResponse
 import com.seojunpark.android.domain.usecase.MainUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

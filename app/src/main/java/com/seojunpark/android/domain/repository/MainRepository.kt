@@ -1,9 +1,11 @@
 package com.seojunpark.android.domain.repository
 
-import com.seojunpark.android.data.dto.DetailResponse
-import com.seojunpark.android.data.dto.LoginResponse
-import com.seojunpark.android.data.dto.MainResponse
+import com.seojunpark.android.data.dto.response.DetailResponse
+import com.seojunpark.android.data.dto.response.LoginResponse
+import com.seojunpark.android.data.dto.response.MainResponse
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 interface MainRepository {
 
@@ -31,5 +33,11 @@ interface MainRepository {
     fun request(
         accessToken: String,
         id: Long
+    ): Flow<Unit>
+
+    fun write(
+        accessToken: String,
+        data: RequestBody,
+        files: List<MultipartBody.Part>
     ): Flow<Unit>
 }

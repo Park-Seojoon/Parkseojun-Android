@@ -15,7 +15,7 @@ class DetailViewModel @Inject constructor(
 
     fun request(accessToken: String, id: Long) {
         viewModelScope.launch {
-            mainUseCase.request(accessToken, id).firstOrNull()
+            mainUseCase.request(accessToken, id)
         }
     }
 }

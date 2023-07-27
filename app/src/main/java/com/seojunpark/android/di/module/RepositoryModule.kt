@@ -4,6 +4,7 @@ import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.SignUpApi
+import com.seojunpark.android.data.remote.WriteApi
 import com.seojunpark.android.data.repository.MainRepositoryImpl
 import com.seojunpark.android.domain.repository.MainRepository
 import dagger.Module
@@ -22,6 +23,7 @@ object RepositoryModule {
         signUpApi: SignUpApi,
         loginApi: LoginApi,
         mainApi: MainApi,
-        detailApi: DetailApi
-    ): MainRepository = MainRepositoryImpl(signUpApi, loginApi, mainApi, detailApi)
+        detailApi: DetailApi,
+        writeApi: WriteApi
+    ): MainRepository = MainRepositoryImpl(signUpApi, loginApi, mainApi, detailApi, writeApi)
 }

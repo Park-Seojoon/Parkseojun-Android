@@ -1,4 +1,4 @@
-package com.seojunpark.android.data.dto
+package com.seojunpark.android.data.dto.response
 
 data class MainResponse(
     val boardList: List<MainDTO>

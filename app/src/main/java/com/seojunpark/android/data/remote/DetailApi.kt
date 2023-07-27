@@ -1,6 +1,6 @@
 package com.seojunpark.android.data.remote
 
-import com.seojunpark.android.data.dto.DetailResponse
+import com.seojunpark.android.data.dto.response.DetailResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

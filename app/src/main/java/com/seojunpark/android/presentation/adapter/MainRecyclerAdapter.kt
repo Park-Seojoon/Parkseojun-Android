@@ -10,8 +10,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.seojunpark.android.data.dto.DetailResponse
-import com.seojunpark.android.data.dto.MainDTO
+import com.seojunpark.android.data.dto.response.DetailResponse
+import com.seojunpark.android.data.dto.response.MainDTO
 import com.seojunpark.android.databinding.RecyclerItemBinding
 import com.seojunpark.android.presentation.ui.DetailActivity
 import com.seojunpark.android.presentation.ui.MainActivity
@@ -27,7 +27,8 @@ class MainRecyclerAdapter(
 
     var detailList: DetailResponse? = null
 
-    inner class ViewHolder(val binding: RecyclerItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: RecyclerItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         val image: ImageView
         val title: TextView
         val point: TextView

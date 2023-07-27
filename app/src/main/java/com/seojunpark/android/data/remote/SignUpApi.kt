@@ -1,6 +1,6 @@
 package com.seojunpark.android.data.remote
 
-import com.seojunpark.android.data.dto.SignUpRequest
+import com.seojunpark.android.data.dto.request.SignUpRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST

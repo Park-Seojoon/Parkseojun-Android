@@ -1,6 +1,8 @@
 package com.seojunpark.android.domain.usecase
 
 import com.seojunpark.android.domain.repository.MainRepository
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class MainUseCase @Inject constructor(
@@ -31,4 +33,6 @@ class MainUseCase @Inject constructor(
     fun loadDetailList(accessToken: String, id: Long) = mainRepository.loadDetailList(accessToken, id)
 
     fun request(accessToken: String, id: Long) = mainRepository.request(accessToken, id)
+
+    fun write(accessToken: String, data: RequestBody, files: List<MultipartBody.Part>) = mainRepository.write(accessToken, data, files)
 }

@@ -1,25 +1,29 @@
 package com.seojunpark.android.data.repository
 
 import android.util.Log
-import com.seojunpark.android.data.dto.DetailResponse
-import com.seojunpark.android.data.dto.LoginResponse
-import com.seojunpark.android.data.dto.LoginRequest
-import com.seojunpark.android.data.dto.MainResponse
-import com.seojunpark.android.data.dto.SignUpRequest
+import com.seojunpark.android.data.dto.response.DetailResponse
+import com.seojunpark.android.data.dto.response.LoginResponse
+import com.seojunpark.android.data.dto.request.LoginRequest
+import com.seojunpark.android.data.dto.response.MainResponse
+import com.seojunpark.android.data.dto.request.SignUpRequest
 import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.SignUpApi
+import com.seojunpark.android.data.remote.WriteApi
 import com.seojunpark.android.domain.repository.MainRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import javax.inject.Inject
 
 class MainRepositoryImpl @Inject constructor(
     private val signUpApi: SignUpApi,
     private val loginApi: LoginApi,
     private val mainApi: MainApi,
-    private val detailApi: DetailApi
+    private val detailApi: DetailApi,
+    private val writeApi: WriteApi
 ) : MainRepository {
 
     override suspend fun signUp(
@@ -120,6 +124,19 @@ class MainRepositoryImpl @Inject constructor(
         return flow {
             try {
                 val response = detailApi.request(accessToken, id)
+                if (response.isSuccessful) {
+                    val result = response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun write(accessToken: String, data: RequestBody, files: List<MultipartBody.Part>): Flow<Unit> {
+        return flow {
+            try {
+                val response = writeApi.write(accessToken, data, files)
                 if (response.isSuccessful) {
                     val result = response.code()
                 }
