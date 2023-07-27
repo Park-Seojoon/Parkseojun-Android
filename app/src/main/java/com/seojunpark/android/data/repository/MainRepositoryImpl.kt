@@ -6,9 +6,11 @@ import com.seojunpark.android.data.dto.response.LoginResponse
 import com.seojunpark.android.data.dto.request.LoginRequest
 import com.seojunpark.android.data.dto.response.MainResponse
 import com.seojunpark.android.data.dto.request.SignUpRequest
+import com.seojunpark.android.data.dto.response.ProfileResponse
 import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
+import com.seojunpark.android.data.remote.ProfileApi
 import com.seojunpark.android.data.remote.SignUpApi
 import com.seojunpark.android.data.remote.WriteApi
 import com.seojunpark.android.domain.repository.MainRepository
@@ -23,7 +25,8 @@ class MainRepositoryImpl @Inject constructor(
     private val loginApi: LoginApi,
     private val mainApi: MainApi,
     private val detailApi: DetailApi,
-    private val writeApi: WriteApi
+    private val writeApi: WriteApi,
+    private val profileApi: ProfileApi
 ) : MainRepository {
 
     override suspend fun signUp(
@@ -139,6 +142,22 @@ class MainRepositoryImpl @Inject constructor(
                 val response = writeApi.write(accessToken, data, files)
                 if (response.isSuccessful) {
                     val result = response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun userInfo(accessToken: String): Flow<ProfileResponse> {
+        return flow {
+            try {
+                val response = profileApi.userInfo(accessToken)
+                if (response.isSuccessful) {
+                    val list = response.body()
+                    if (list != null) {
+                        emit(list)
+                    }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

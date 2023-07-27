@@ -3,6 +3,7 @@ package com.seojunpark.android.di.module
 import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
+import com.seojunpark.android.data.remote.ProfileApi
 import com.seojunpark.android.data.remote.SignUpApi
 import com.seojunpark.android.data.remote.WriteApi
 import com.seojunpark.android.data.repository.MainRepositoryImpl
@@ -24,6 +25,7 @@ object RepositoryModule {
         loginApi: LoginApi,
         mainApi: MainApi,
         detailApi: DetailApi,
-        writeApi: WriteApi
-    ): MainRepository = MainRepositoryImpl(signUpApi, loginApi, mainApi, detailApi, writeApi)
+        writeApi: WriteApi,
+        profileApi: ProfileApi
+    ): MainRepository = MainRepositoryImpl(signUpApi, loginApi, mainApi, detailApi, writeApi, profileApi)
 }
