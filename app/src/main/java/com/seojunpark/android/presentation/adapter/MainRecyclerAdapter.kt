@@ -55,6 +55,7 @@ class MainRecyclerAdapter(
                             if (detailList != null) {
                                 if (list.id == detailList!!.id) {
                                     val intent = Intent(activity, DetailActivity::class.java)
+                                    intent.putExtra("id", detailList!!.id)
                                     intent.putExtra("url", detailList!!.url)
                                     intent.putExtra("title", detailList!!.title)
                                     intent.putExtra("point", detailList!!.point)

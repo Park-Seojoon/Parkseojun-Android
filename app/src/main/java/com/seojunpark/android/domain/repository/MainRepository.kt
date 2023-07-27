@@ -27,4 +27,9 @@ interface MainRepository {
         accessToken: String,
         id: Long
     ): Flow<DetailResponse>
+
+    fun request(
+        accessToken: String,
+        id: Long
+    ): Flow<Unit>
 }

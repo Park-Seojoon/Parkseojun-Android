@@ -115,4 +115,17 @@ class MainRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override fun request(accessToken: String, id: Long): Flow<Unit> {
+        return flow {
+            try {
+                val response = detailApi.request(accessToken, id)
+                if (response.isSuccessful) {
+                    val result = response.code()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
 }
