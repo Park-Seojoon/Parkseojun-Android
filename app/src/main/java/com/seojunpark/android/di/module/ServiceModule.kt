@@ -6,6 +6,7 @@ import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.ProfileApi
 import com.seojunpark.android.data.remote.SignUpApi
 import com.seojunpark.android.data.remote.WriteApi
+import com.seojunpark.android.data.remote.WriteListApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,4 +41,8 @@ object ServiceModule {
     @Singleton
     @Provides
     fun providesProfileService(retrofit: Retrofit): ProfileApi = retrofit.create(ProfileApi::class.java)
+
+    @Singleton
+    @Provides
+    fun providesWriteListService(retrofit: Retrofit): WriteListApi = retrofit.create(WriteListApi::class.java)
 }

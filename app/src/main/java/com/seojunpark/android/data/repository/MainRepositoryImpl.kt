@@ -7,12 +7,14 @@ import com.seojunpark.android.data.dto.request.LoginRequest
 import com.seojunpark.android.data.dto.response.MainResponse
 import com.seojunpark.android.data.dto.request.SignUpRequest
 import com.seojunpark.android.data.dto.response.ProfileResponse
+import com.seojunpark.android.data.dto.response.WriteListResponse
 import com.seojunpark.android.data.remote.DetailApi
 import com.seojunpark.android.data.remote.LoginApi
 import com.seojunpark.android.data.remote.MainApi
 import com.seojunpark.android.data.remote.ProfileApi
 import com.seojunpark.android.data.remote.SignUpApi
 import com.seojunpark.android.data.remote.WriteApi
+import com.seojunpark.android.data.remote.WriteListApi
 import com.seojunpark.android.domain.repository.MainRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,7 +28,8 @@ class MainRepositoryImpl @Inject constructor(
     private val mainApi: MainApi,
     private val detailApi: DetailApi,
     private val writeApi: WriteApi,
-    private val profileApi: ProfileApi
+    private val profileApi: ProfileApi,
+    private val writeListApi: WriteListApi
 ) : MainRepository {
 
     override suspend fun signUp(
@@ -153,6 +156,22 @@ class MainRepositoryImpl @Inject constructor(
         return flow {
             try {
                 val response = profileApi.userInfo(accessToken)
+                if (response.isSuccessful) {
+                    val list = response.body()
+                    if (list != null) {
+                        emit(list)
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    override fun writeList(accessToken: String): Flow<WriteListResponse> {
+        return flow {
+            try {
+                val response = writeListApi.writeList(accessToken)
                 if (response.isSuccessful) {
                     val list = response.body()
                     if (list != null) {

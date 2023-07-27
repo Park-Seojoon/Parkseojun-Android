@@ -31,6 +31,7 @@ class DetailActivity : AppCompatActivity() {
 
         val accessToken = sharedPreferences.getString("accessToken", "")
 
+        val activity = intent.getStringExtra("activity")
         val id = intent.getLongExtra("id", 0)
         val url = intent.getStringExtra("url")
         val title = intent.getStringExtra("title")
@@ -52,23 +53,51 @@ class DetailActivity : AppCompatActivity() {
 
             this.content.text = content
 
-            if (completed) {
-                btn.setBackgroundResource(R.drawable.btn2_background)
-                btn.text = "마감"
-            } else {
-                btn.setBackgroundResource(R.drawable.btn_background)
-                btn.text = "신청하기"
+            when(activity) {
+                "Main" -> {
+                    if (completed) {
+                        btn.setBackgroundResource(R.drawable.btn2_background)
+                        btn.text = "마감"
+                    } else {
+                        btn.setBackgroundResource(R.drawable.btn_background)
+                        btn.text = "신청하기"
+                    }
+                }
+                "WriteList" -> {
+                    if (completed) {
+                        btn.setBackgroundResource(R.drawable.btn2_background)
+                        btn.text = "완료"
+                    } else {
+                        btn.setBackgroundResource(R.drawable.btn_background)
+                        btn.text = "수락"
+                    }
+                }
             }
 
             btn.setOnClickListener {
-                if (!completed) {
-                    if (!accessToken.isNullOrBlank()) {
-                        viewModel.request(accessToken, id)
+                when(activity) {
+                    "Main" -> {
+                        if (!completed) {
+                            if (!accessToken.isNullOrBlank()) {
+                                viewModel.request(accessToken, id)
 
-                        btn.setBackgroundResource(R.drawable.btn2_background)
-                        btn.text = "마감"
+                                btn.setBackgroundResource(R.drawable.btn2_background)
+                                btn.text = "마감"
+                            }
+                        }
+                    }
+                    "WriteList" -> {
+                        if (!completed) {
+                            if (!accessToken.isNullOrBlank()) {
+                                viewModel.request(accessToken, id)
+
+                                btn.setBackgroundResource(R.drawable.btn2_background)
+                                btn.text = "마감"
+                            }
+                        }
                     }
                 }
+
             }
         }
     }

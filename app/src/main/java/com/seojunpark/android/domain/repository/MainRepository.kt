@@ -4,6 +4,7 @@ import com.seojunpark.android.data.dto.response.DetailResponse
 import com.seojunpark.android.data.dto.response.LoginResponse
 import com.seojunpark.android.data.dto.response.MainResponse
 import com.seojunpark.android.data.dto.response.ProfileResponse
+import com.seojunpark.android.data.dto.response.WriteListResponse
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -45,4 +46,8 @@ interface MainRepository {
     fun userInfo(
         accessToken: String
     ): Flow<ProfileResponse>
+
+    fun writeList(
+        accessToken: String
+    ): Flow<WriteListResponse>
 }

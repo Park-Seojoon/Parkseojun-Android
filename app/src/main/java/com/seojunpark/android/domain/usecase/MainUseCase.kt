@@ -37,4 +37,6 @@ class MainUseCase @Inject constructor(
     fun write(accessToken: String, data: RequestBody, files: List<MultipartBody.Part>) = mainRepository.write(accessToken, data, files)
 
     fun userInfo(accessToken: String) = mainRepository.userInfo(accessToken)
+
+    fun writeList(accessToken: String) = mainRepository.writeList(accessToken)
 }
