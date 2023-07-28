@@ -50,7 +50,7 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="30dp"
-            android:background="@drawable/camera_background"
+            android:background="@drawable/content_background"
             android:paddingStart="20dp"
             android:paddingTop="10dp"
             android:paddingEnd="20dp"
