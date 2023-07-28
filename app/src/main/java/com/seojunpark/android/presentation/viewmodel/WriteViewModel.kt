@@ -26,7 +26,7 @@ class WriteViewModel @Inject constructor(
     var point = MutableLiveData<String>()
     var content = MutableLiveData<String>()
 
-    fun write(accessToken: String, files: List<MultipartBody.Part>) {
+    fun write(accessToken: String, file: List<MultipartBody.Part>) {
         val titleValue = title.value.toString()
         val pointValue = point.value.toString()
         val contentValue = content.value.toString()
@@ -42,10 +42,15 @@ class WriteViewModel @Inject constructor(
         }
 
         viewModelScope.launch(Dispatchers.IO) {
-            mainUseCase.write(accessToken, data, files).also {
-                _doneEvent.postValue(Pair(true, "글 작성이 완료되었습니다."))
+            mainUseCase.write(accessToken, data, file).also {
+                _doneEvent.postValue(
+                    Pair(
+                        it.first,
+                        it.second
+                    )
+                )
+                Log.d("write", accessToken + "\n" + data.toString() + "\n" + file.toString() )
             }
-            Log.d("move", accessToken + "\n" + data.toString() + "\n" + files.toString())
         }
     }
 

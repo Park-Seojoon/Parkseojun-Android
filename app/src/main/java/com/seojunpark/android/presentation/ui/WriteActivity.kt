@@ -108,7 +108,7 @@ class WriteActivity : AppCompatActivity() {
             outputStream.close()
 
             val requestFile = RequestBody.create(contentResolver.getType(uri)!!.toMediaTypeOrNull(), file)
-            val part = MultipartBody.Part.createFormData("files", file.name, requestFile)
+            val part = MultipartBody.Part.createFormData("file", file.name, requestFile)
 
             return listOf(part)
         } catch (e: IOException) {

@@ -41,7 +41,7 @@ interface MainRepository {
     suspend fun write(
         accessToken: String,
         data: RequestBody,
-        files: List<MultipartBody.Part>
+        file: List<MultipartBody.Part>
     ): Pair<Boolean, String>
 
     fun userInfo(

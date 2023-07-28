@@ -168,29 +168,29 @@ class MainRepositoryImpl @Inject constructor(
     override suspend fun write(
         accessToken: String,
         data: RequestBody,
-        files: List<MultipartBody.Part>
+        file: List<MultipartBody.Part>
     ): Pair<Boolean, String> {
         return try {
-            val response = writeApi.write(accessToken, data, files)
+            val response = writeApi.write(accessToken, data, file)
             when (response.code()) {
                 200 -> {
                     Pair(true, "성공적으로 신청되었습니다.")
+                }
+
+                400 -> {
+                    Pair(false, "요청이 올바르지 않거나, 파일 형식이 올바르지 않습니다.")
                 }
 
                 401 -> {
                     Pair(false, "유효한 토큰이 아닙니다.")
                 }
 
-                403 -> {
-                    Pair(false, "본인 게시글입니다.")
-                }
-
-                404 -> {
-                    Pair(false, "게시글이 없습니다..")
-                }
-
                 409 -> {
-                    Pair(false, "이미 신청한 유저가 있습니다.")
+                    Pair(false, "이미 같은 제목의 글이 있습니다.")
+                }
+
+                500 -> {
+                    Pair(false, "알 수 없는 오류로 파일 업로드가 실패했습니다.")
                 }
 
                 else -> {
