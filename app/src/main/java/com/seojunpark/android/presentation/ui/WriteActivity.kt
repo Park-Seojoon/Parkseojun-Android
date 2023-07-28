@@ -3,9 +3,12 @@ package com.seojunpark.android.presentation.ui
 import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -98,17 +101,32 @@ class WriteActivity : AppCompatActivity() {
     }
 
     // 선택된 이미지의 URI를 파일로 변환한 뒤 MultipartBody.Part로 변환합니다.
+    // 선택된 이미지의 URI를 파일로 변환한 뒤 MultipartBody.Part로 변환합니다.
     private fun uriToMultipartBodyParts(uri: Uri): List<MultipartBody.Part> {
         try {
             val inputStream = contentResolver.openInputStream(uri)
-            val file = File(cacheDir, "temp_image")
+            val file = File(cacheDir, "temp_image.jpg") // 임시 파일을 .jpg로 저장합니다.
             val outputStream = FileOutputStream(file)
             inputStream?.copyTo(outputStream)
             inputStream?.close()
             outputStream.close()
 
-            val requestFile = RequestBody.create(contentResolver.getType(uri)!!.toMediaTypeOrNull(), file)
-            val part = MultipartBody.Part.createFormData("file", file.name, requestFile)
+            // 파일의 확장자를 확인하여 로그로 출력합니다.
+            val fileType = contentResolver.getType(uri)
+            Log.d("ImageFileType", "File type: $fileType")
+
+            // 이미지를 PNG로 변경하고 새로운 파일을 생성합니다.
+            val pngFile = File(cacheDir, "temp_image.png")
+            val bitmap = BitmapFactory.decodeFile(file.path)
+            val pngOutputStream = FileOutputStream(pngFile)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, pngOutputStream)
+            pngOutputStream.close()
+
+            val requestFile = RequestBody.create("image/png".toMediaTypeOrNull(), pngFile) // PNG 파일로 생성합니다.
+            val part = MultipartBody.Part.createFormData("file", pngFile.name, requestFile)
+
+            // 기존에 생성한 임시 파일은 삭제합니다.
+            file.delete()
 
             return listOf(part)
         } catch (e: IOException) {
@@ -116,4 +134,5 @@ class WriteActivity : AppCompatActivity() {
         }
         return emptyList()
     }
+
 }
