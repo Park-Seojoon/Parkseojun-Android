@@ -107,7 +107,6 @@ class WriteActivity : AppCompatActivity() {
     }
 
     // 선택된 이미지의 URI를 파일로 변환한 뒤 MultipartBody.Part로 변환합니다.
-    // 선택된 이미지의 URI를 파일로 변환한 뒤 MultipartBody.Part로 변환합니다.
     private fun uriToMultipartBodyParts(uri: Uri): List<MultipartBody.Part> {
         try {
             val inputStream = contentResolver.openInputStream(uri)

@@ -173,7 +173,7 @@ class MainRepositoryImpl @Inject constructor(
         return try {
             val response = writeApi.write(accessToken, data, file)
             when (response.code()) {
-                200 -> {
+                201 -> {
                     Pair(true, "성공적으로 신청되었습니다.")
                 }
 
