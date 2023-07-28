@@ -65,6 +65,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/input_email" />
 
+        <ImageView
+            android:id="@+id/pw_show_hide"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/baseline_eye_off"
+            app:layout_constraintEnd_toEndOf="@id/input_pw"
+            app:layout_constraintTop_toTopOf="@id/input_pw"
+            app:layout_constraintBottom_toBottomOf="@id/input_pw"
+            android:layout_marginRight="15dp"/>
+
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_login"
             android:layout_width="0dp"

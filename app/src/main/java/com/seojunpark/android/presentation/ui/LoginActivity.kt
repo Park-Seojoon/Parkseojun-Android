@@ -4,11 +4,13 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.seojunpark.android.R
 import com.seojunpark.android.databinding.ActivityLoginBinding
 import com.seojunpark.android.presentation.viewmodel.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +23,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
     private val viewModel: LoginViewModel by viewModels()
     private lateinit var sharedPreferences: SharedPreferences
+    var passwordStatus: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -35,6 +38,18 @@ class LoginActivity : AppCompatActivity() {
         with(binding) {
             btnLogin.setOnClickListener {
                 viewModel?.login()
+            }
+
+            pwShowHide.setOnClickListener {
+                passwordStatus = !passwordStatus
+
+                if (passwordStatus) {
+                    inputPw.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                    pwShowHide.setBackgroundResource(R.drawable.baseline_eye_on)
+                } else {
+                    inputPw.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD or InputType.TYPE_CLASS_TEXT
+                    pwShowHide.setBackgroundResource(R.drawable.baseline_eye_off)
+                }
             }
 
             goSingUp.setOnClickListener {
