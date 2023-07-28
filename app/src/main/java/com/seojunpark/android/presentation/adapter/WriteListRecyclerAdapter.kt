@@ -13,11 +13,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.seojunpark.android.R
 import com.seojunpark.android.data.dto.response.DetailResponse
 import com.seojunpark.android.data.dto.response.WriteListDTO
 import com.seojunpark.android.databinding.RecyclerItem2Binding
-import com.seojunpark.android.databinding.RecyclerItemBinding
 import com.seojunpark.android.presentation.ui.DetailActivity
 import com.seojunpark.android.presentation.ui.MainActivity
 import com.seojunpark.android.presentation.ui.WriteListActivity
@@ -102,7 +104,9 @@ class WriteListRecyclerAdapter(
         }
 
         fun bind(list: WriteListDTO) {
-            glide.load(list.url).centerCrop().into(image)
+            glide.load(list.url)
+                .transform(CenterCrop(), RoundedCorners(30))
+                .into(image)
             title.text = list.title
             point.text = NumberFormat.getInstance(Locale.KOREA).format(list.point) + " point"
             Log.d("myListIngType", list.myListIngType)

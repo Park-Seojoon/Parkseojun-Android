@@ -16,6 +16,7 @@
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_marginStart="10dp"
+            android:scaleType="centerCrop"
             android:background="@drawable/image_background"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

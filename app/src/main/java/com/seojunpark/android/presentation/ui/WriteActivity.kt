@@ -15,6 +15,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.seojunpark.android.databinding.ActivityWriteBinding
 import com.seojunpark.android.presentation.viewmodel.WriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,7 +63,10 @@ class WriteActivity : AppCompatActivity() {
                     val imageUri = data.data
                     if (imageUri != null) {
                         // 선택된 이미지를 화면에 보여줍니다.
-                        binding.image.setImageURI(imageUri)
+                        Glide.with(this)
+                            .load(imageUri)
+                            .transform(CenterCrop(), RoundedCorners(30))
+                            .into(binding.image)
 
                         // 선택된 이미지의 URI를 저장합니다.
                         selectedImageUri = imageUri
